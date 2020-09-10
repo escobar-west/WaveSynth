@@ -53,13 +53,14 @@ fn fft(signal: &Vec<f64>) -> Vec<Complex> {
         }
         let left = fft(&even_elems);
         let right = fft(&odd_elems);
+        let mut twiddles = Vec::with_capacity(signal.len() / 2);
         for k in 0..signal.len() / 2 {
-            let twiddle = Complex::from_theta(-2.0 * PI * k as f64 / signal.len() as f64);
-            output.push(left[k] + twiddle * right[k]);
+            let twid = Complex::from_theta(-2.0 * PI * k as f64 / signal.len() as f64);
+            output.push(left[k] + twid * right[k]);
+            twiddles.push(twid);
         }
         for k in 0..signal.len() / 2 {
-            let twiddle = Complex::from_theta(-2.0 * PI * k as f64 / signal.len() as f64);
-            output.push(left[k] - twiddle * right[k]);
+            output.push(left[k] - twiddles[k] * right[k]);
         }
     }
     output
