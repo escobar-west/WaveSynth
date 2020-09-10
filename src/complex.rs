@@ -1,5 +1,5 @@
-use std::ops::{Add, Sub, Mul};
 use std::fmt;
+use std::ops::{Add, Mul, Sub};
 
 #[derive(Copy, Clone)]
 pub struct Complex {
@@ -24,7 +24,7 @@ impl Add for Complex {
         }
     }
 }
-    
+
 impl Sub for Complex {
     type Output = Complex;
 

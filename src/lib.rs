@@ -41,7 +41,7 @@ fn fft(signal: &Vec<f64>) -> Vec<Complex> {
     } else {
         let mut even_elems: Vec<f64> = Vec::new();
         let mut odd_elems: Vec<f64> = Vec::new();
-    
+
         let mut counter = 0;
         for elem in signal.iter() {
             if counter & 1 == 0 {
@@ -53,11 +53,11 @@ fn fft(signal: &Vec<f64>) -> Vec<Complex> {
         }
         let left = fft(&even_elems);
         let right = fft(&odd_elems);
-        for k in 0..signal.len()/2 {
+        for k in 0..signal.len() / 2 {
             let twiddle = Complex::from_theta(-2.0 * PI * k as f64 / signal.len() as f64);
             output.push(left[k] + twiddle * right[k]);
         }
-        for k in 0..signal.len()/2 {
+        for k in 0..signal.len() / 2 {
             let twiddle = Complex::from_theta(-2.0 * PI * k as f64 / signal.len() as f64);
             output.push(left[k] - twiddle * right[k]);
         }
@@ -77,8 +77,8 @@ mod tests {
         let dft_res = dft(&test_signal);
         println!("{}", "start");
         for i in 0..fft_res.len() {
-            println!("fft[{}], {}",i, fft_res[i]);
-            println!("dft[{}], {}",i, dft_res[i]);
+            println!("fft[{}], {}", i, fft_res[i]);
+            println!("dft[{}], {}", i, dft_res[i]);
             assert!((fft_res[i] - dft_res[i]).abs() < 1e-12);
         }
     }
