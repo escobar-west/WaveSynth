@@ -69,8 +69,10 @@ fn fft(signal: &[f64]) -> Vec<Complex> {
 
 fn stft(signal: &[f64], window: u32, shift: u32) -> Vec<Vec<Complex>> {
     let mut output = Vec::new();
-    for i in 0 .. (signal.len() as u32 - window) / shift {
-        output.push(fft(&apply_hann(&signal[i as usize .. (i+window) as usize])[..]));
+    for i in 0..(signal.len() as u32 - window) / shift {
+        output.push(fft(
+            &apply_hann(&signal[i as usize..(i + window) as usize])[..]
+        ));
     }
     output
 }
@@ -82,19 +84,26 @@ mod tests {
     #[test]
     fn call_fft() {
         let n = 2048;
-        let test_signal = (0 .. n)
-                              .map(|x| {
-                                  let theta = (2.0 * PI * (x * x) as f64 / n as f64);
-                                  (theta/2.0).sin() + theta.cos()})
-                              .collect::<Vec<f64>>();
+        let test_signal = (0..n)
+            .map(|x| {
+                let theta = (2.0 * PI * (x * x) as f64 / n as f64);
+                (theta / 2.0).sin() + theta.cos()
+            })
+            .collect::<Vec<f64>>();
 
         let now = Instant::now();
         let fft_res = fft(&test_signal);
-        println!("fft time: {} seconds", now.elapsed().as_micros() as f32 / 1_000_000.0);
+        println!(
+            "fft time: {} seconds",
+            now.elapsed().as_micros() as f32 / 1_000_000.0
+        );
 
         let now = Instant::now();
         let dft_res = dft(&test_signal);
-        println!("dft time: {} seconds", now.elapsed().as_micros() as f32 / 1_000_000.0);
+        println!(
+            "dft time: {} seconds",
+            now.elapsed().as_micros() as f32 / 1_000_000.0
+        );
 
         for i in 0..fft_res.len() {
             assert!((fft_res[i] - dft_res[i]).abs() < 1e-12);
@@ -105,12 +114,15 @@ mod tests {
         let window = 2048;
         let shift = 1024;
         let n = 32 * shift;
-        let test_signal = (0 .. n)
-                              .map(|x| {(2.0 * PI * (x * x) as f64 / n as f64).cos()})
-                              .collect::<Vec<f64>>();
+        let test_signal = (0..n)
+            .map(|x| (2.0 * PI * (x * x) as f64 / n as f64).cos())
+            .collect::<Vec<f64>>();
 
         let now = Instant::now();
         let fft_res = stft(&test_signal[..], window, shift);
-        println!("stft time: {} seconds", now.elapsed().as_micros() as f32 / 1_000_000.0);
+        println!(
+            "stft time: {} seconds",
+            now.elapsed().as_micros() as f32 / 1_000_000.0
+        );
     }
 }
