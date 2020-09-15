@@ -1,7 +1,6 @@
 mod complex;
 use complex::Complex;
 use std::f64::consts::PI;
-use std::time::Instant;
 
 #[inline]
 fn apply_hann(signal: &[f64]) -> Vec<f64> {
@@ -34,7 +33,7 @@ fn dft(signal: &[f64]) -> Vec<Complex> {
     output
 }
 
-fn fft(signal: &[f64]) -> Vec<Complex> {
+pub fn fft(signal: &[f64]) -> Vec<Complex> {
     let mut output = Vec::new();
 
     if signal.len() == 1 {
@@ -67,7 +66,7 @@ fn fft(signal: &[f64]) -> Vec<Complex> {
     output
 }
 
-fn stft(signal: &[f64], window: u32, shift: u32) -> Vec<Vec<Complex>> {
+pub fn stft(signal: &[f64], window: u32, shift: u32) -> Vec<Vec<Complex>> {
     let mut output = Vec::new();
     for i in 0..(signal.len() as u32 - window) / shift {
         output.push(fft(
@@ -80,6 +79,7 @@ fn stft(signal: &[f64], window: u32, shift: u32) -> Vec<Vec<Complex>> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::time::Instant;
 
     #[test]
     fn call_fft() {
