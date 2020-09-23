@@ -1,5 +1,6 @@
 /target
+.DS_Store
+output.csv
 Cargo.lock
 *swp
 *txt
-*wav
